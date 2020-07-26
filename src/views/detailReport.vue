@@ -17,6 +17,9 @@
           </v-btn>
           <v-spacer />
 
+          <v-btn @click="sharePdf()">
+            <v-icon>mdi-eye</v-icon>
+          </v-btn>
           <v-btn v-if="pdfUrl" icon :href="pdfUrl" target="_blank">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
@@ -208,14 +211,18 @@ export default {
       }
     },
 
-    openPdf() {
+    sharePdf() {
       if (
         navigator.canShare &&
-        navigator.canShare({ files: ["DetailReport.pdf"] })
+        navigator.canShare({
+          files: ["https://sitaram-backend.herokuapp.com/pdf/detailReport.pdf"],
+        })
       ) {
         navigator
           .share({
-            files: ["DetailReport.pdf"],
+            files: [
+              "https://sitaram-backend.herokuapp.com/pdf/detailReport.pdf",
+            ],
             title: "Vacation Pictures",
             text: "Photos from September 27 to October 14.",
           })

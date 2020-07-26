@@ -11,6 +11,9 @@
           </v-app-bar-nav-icon>
 
           <v-spacer></v-spacer>
+          <v-btn v-if="pdfUrl" icon @click="sharePdf()" target="_blank">
+            <v-icon>mdi-eye</v-icon>
+          </v-btn>
           <v-btn v-if="pdfUrl" icon :href="pdfUrl" target="_blank">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
@@ -277,11 +280,25 @@ export default {
       }
     },
 
-    openPdf() {
-      if (navigator.canShare && navigator.canShare({ files: ["file.pdf"] })) {
+    sharePdf() {
+     const filesArray = [
+       {
+         lastModified: 1595800444000,
+​​​
+name: "file.pdf",
+​​​
+size: 433032,
+​​​
+type: "application/pdf",
+​​​
+webkitRelativePath: "https://sitaram-backend.herokuapp.com/pdf/singleParty.pdf"
+       }
+     ]
+
+      if (navigator.canShare && navigator.canShare({ filesArray })) {
         navigator
           .share({
-            files: ["file.pdf"],
+            files: filesArray,
             title: "Vacation Pictures",
             text: "Photos from September 27 to October 14.",
           })
