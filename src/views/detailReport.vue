@@ -17,9 +17,9 @@
           </v-btn>
           <v-spacer />
 
-          <v-btn @click="sharePdf()">
+          <!-- <v-btn @click="sharePdf()">
             <v-icon>mdi-eye</v-icon>
-          </v-btn>
+          </v-btn> -->
           <v-btn v-if="pdfUrl" icon :href="pdfUrl" target="_blank">
             <v-icon>mdi-eye</v-icon>
           </v-btn>

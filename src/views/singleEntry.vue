@@ -11,9 +11,9 @@
           </v-app-bar-nav-icon>
 
           <v-spacer></v-spacer>
-          <v-btn v-if="pdfUrl" icon @click="sharePdf()" target="_blank">
+          <!-- <v-btn v-if="pdfUrl" icon @click="sharePdf()" target="_blank">
             <v-icon>mdi-eye</v-icon>
-          </v-btn>
+          </v-btn> -->
           <v-btn v-if="pdfUrl" icon :href="pdfUrl" target="_blank">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
