@@ -281,19 +281,16 @@ export default {
     },
 
     sharePdf() {
-     const filesArray = [
-       {
-         lastModified: 1595800444000,
-​​​
-name: "file.pdf",
-​​​
-size: 433032,
-​​​
-type: "application/pdf",
-​​​
-webkitRelativePath: "https://sitaram-backend.herokuapp.com/pdf/singleParty.pdf"
-       }
-     ]
+      const filesArray = [
+        {
+          lastModified: 1595800444000,
+          name: "file.pdf",
+          size: 433032,
+          type: "application/pdf",
+          webkitRelativePath:
+            "https://sitaram-backend.herokuapp.com/pdf/singleParty.pdf",
+        },
+      ];
 
       if (navigator.canShare && navigator.canShare({ filesArray })) {
         navigator
