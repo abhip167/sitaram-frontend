@@ -20,7 +20,12 @@
           <!-- <v-btn @click="sharePdf()">
             <v-icon>mdi-eye</v-icon>
           </v-btn> -->
-          <v-btn v-if="pdfUrl" icon :href="pdfUrl" target="_blank">
+          <v-btn
+            v-if="this.$store.state.detailPdfUrl"
+            icon
+            :href="this.$store.state.detailPdfUrl"
+            target="_blank"
+          >
             <v-icon>mdi-eye</v-icon>
           </v-btn>
           <v-btn @click="printPdf()" icon>
@@ -111,7 +116,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   name: "detailReport",
   data() {
@@ -185,25 +190,27 @@ export default {
     async printPdf() {
       try {
         this.loader = true;
-        const config = {
-          url: process.env.VUE_APP_API + "/outstandingrep/detail/pdf/",
-          method: "GET",
-          responseType: "blob",
-        };
-        const response = await axios(config);
-
-        var fileURL = await window.URL.createObjectURL(
-          new Blob([response.data])
-        );
-        this.pdfUrl = fileURL;
-        var fileLink = await document.createElement("a");
-        fileLink.href = await fileURL;
-        await fileLink.setAttribute("download", "DetailReport.pdf");
-        await document.body.appendChild(fileLink);
-        await fileLink.click();
+        await this.$store.dispatch("getDetailReportPdf");
         this.loader = false;
-        this.pdfUrl =
-          "https://docs.google.com/viewerng/viewer?url=https://sitaram-backend.herokuapp.com/pdf/detailReport.pdf";
+        // const config = {
+        //   url: process.env.VUE_APP_API + "/outstandingrep/detail/pdf/",
+        //   method: "GET",
+        //   responseType: "blob",
+        // };
+        // const response = await axios(config);
+
+        // var fileURL = await window.URL.createObjectURL(
+        //   new Blob([response.data])
+        // );
+        // this.pdfUrl = fileURL;
+        // var fileLink = await document.createElement("a");
+        // fileLink.href = await fileURL;
+        // await fileLink.setAttribute("download", "DetailReport.pdf");
+        // await document.body.appendChild(fileLink);
+        // await fileLink.click();
+        // this.loader = false;
+        // this.pdfUrl =
+        //   "https://docs.google.com/viewerng/viewer?url=https://sitaram-backend.herokuapp.com/pdf/detailReport.pdf";
       } catch (error) {
         this.loader = false;
         this.pdfUrl = "";

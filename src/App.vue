@@ -17,7 +17,10 @@
             <v-list-item-icon>
               <v-icon> {{ item.icon }} </v-icon>
             </v-list-item-icon>
-            <v-list-item-title> {{ item.title }} </v-list-item-title>
+
+            <v-list-item-title>
+              <router-link :to="`${item.link}`"> {{ item.title }} </router-link>
+            </v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -54,3 +57,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+a {
+  text-decoration: none;
+}
+</style>

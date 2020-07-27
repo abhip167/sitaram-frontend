@@ -544,8 +544,8 @@ export default {
         },
       ],
       paidTypeSelected: {
-        DIRECTPAY: "",
-        type: "",
+        DIRECTPAY: 1,
+        type: "Pending Only",
       },
       fromdate: new Date("01 April 2010 14:48 UTC").toISOString().substr(0, 10),
       frommodal: false,
@@ -691,7 +691,6 @@ export default {
         BBOOKCODE: this.bookSelected.BBOOKCODE,
         DAYS: this.days,
       };
-
       if (this.radioGroup == "detail") {
         if (!this.valid()) return;
         console.log("Detail Query Sent");

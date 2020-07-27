@@ -14,7 +14,12 @@
           <!-- <v-btn v-if="pdfUrl" icon @click="sharePdf()" target="_blank">
             <v-icon>mdi-eye</v-icon>
           </v-btn> -->
-          <v-btn v-if="pdfUrl" icon :href="pdfUrl" target="_blank">
+          <v-btn
+            v-if="pdfUrl"
+            icon
+            :href="$store.state.singlePartyPdfUrl"
+            target="_blank"
+          >
             <v-icon>mdi-eye</v-icon>
           </v-btn>
           <v-btn @click="printPdf()" icon>
@@ -84,7 +89,7 @@
               class="display-1 text-end red--text text--lighten-1"
               cols="10"
             >
-              {{ $route.query.amount | removeDecimalZeroes }} ₹
+              {{ partyTotal.OUTSTANDINGAMT | removeDecimalZeroes }} ₹
             </v-col>
           </v-row>
         </v-card-text>
@@ -118,14 +123,14 @@
           dense
           hide-default-footer
         >
-          <template v-slot:item.BILLDATE="{ item }">
+          <!-- <template v-slot:item.BILLDATE="{ item }">
             {{ item.BILLDATE.substring(0, 10) }}
           </template>
           <template v-slot:item.RECEIPTDATE="{ item }">
             <span v-if="item.RECEIPTDATE">{{
               item.RECEIPTDATE.substring(0, 10)
             }}</span>
-          </template>
+          </template> -->
         </v-data-table>
 
         <v-divider></v-divider>
@@ -139,7 +144,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   // mounted() {
@@ -158,7 +163,7 @@ export default {
 
   data() {
     return {
-      pdfUrl: "",
+      pdfUrl: this.$store.state.singlePartyPdfUrl,
       loader: false,
       allDetails: null,
       params: this.$route.params.id,
@@ -169,7 +174,8 @@ export default {
           sortable: false,
           value: "BILLHEADER",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-end text-right text-md-h4 white--text  font-weight-medium",
         },
         {
           text: "Bill No.",
@@ -228,7 +234,7 @@ export default {
           class: "primary   text-md-h4 white--text  font-weight-medium",
         },
         {
-          text: "Vou. Amt.",
+          text: "Balance",
           align: "start",
           sortable: false,
           value: "BALANCE",
@@ -250,29 +256,35 @@ export default {
     async printPdf() {
       try {
         this.loader = true;
-        const config = {
-          url:
-            process.env.VUE_APP_API +
-            "/outstandingrep/pdf/" +
-            this.partyInfo[0].PARTY +
-            `?amount=${this.$route.query.amount}`,
-          method: "GET",
-          responseType: "blob",
-        };
-        const response = await axios(config);
-
-        var fileURL = await window.URL.createObjectURL(
-          new Blob([response.data])
+        await this.$store.dispatch(
+          "getSinglepartyPdf",
+          this.partyInfo[0].PARTY,
+          this.partyInfo[0].PARTYNM
         );
-        this.pdfUrl = fileURL;
-        var fileLink = await document.createElement("a");
-        fileLink.href = await fileURL;
-        await fileLink.setAttribute("download", "file.pdf");
-        await document.body.appendChild(fileLink);
-        await fileLink.click();
         this.loader = false;
-        this.pdfUrl =
-          "https://docs.google.com/viewerng/viewer?url=https://sitaram-backend.herokuapp.com/pdf/singleParty.pdf";
+        // const config = {
+        //   url:
+        //     process.env.VUE_APP_API +
+        //     "/outstandingrep/pdf/" +
+        //     this.partyInfo[0].PARTY,
+        //   method: "POST",
+        //   responseType: "blob",
+        //   data: this.$store.state.queryParameters,
+        // };
+        // const response = await axios(config);
+
+        // var fileURL = await window.URL.createObjectURL(
+        //   new Blob([response.data])
+        // );
+        // this.pdfUrl = fileURL;
+        // var fileLink = await document.createElement("a");
+        // fileLink.href = await fileURL;
+        // await fileLink.setAttribute("download", "file.pdf");
+        // await document.body.appendChild(fileLink);
+        // await fileLink.click();
+        // this.loader = false;
+        // this.pdfUrl =
+        //   "https://docs.google.com/viewerng/viewer?url=https://sitaram-backend.herokuapp.com/pdf/singleParty.pdf";
       } catch (error) {
         this.loader = false;
         this.pdfUrl = "";
