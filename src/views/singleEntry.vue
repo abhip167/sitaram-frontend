@@ -1,10 +1,10 @@
 <template>
-  <v-row>
+  <v-row justify="center" align="center">
     <v-col cols="12" sm="6">
       <v-overlay :value="loader">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
-      <v-card class="mx-auto" max-width="400">
+      <v-card class="mx-auto">
         <v-toolbar flat color="accent" dense>
           <v-app-bar-nav-icon @click="$router.go(-1)">
             <v-icon>mdi-arrow-left</v-icon>
@@ -118,7 +118,7 @@
           :headers="headers"
           :items="partyInfo"
           :items-per-page="partyInfo.length"
-          class="elevation-1 mt-2"
+          class="elevation-1 mt-2 text-right"
           mobile-breakpoint="300"
           dense
           hide-default-footer
@@ -136,7 +136,7 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn text>Full Report</v-btn>
+          <v-btn text @click="printPdf()">Full Report</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -174,8 +174,7 @@ export default {
           sortable: false,
           value: "BILLHEADER",
           // eslint-disable-next-line prettier/prettier
-          class:
-            "primary  text-end text-right text-md-h4 white--text  font-weight-medium",
+          class: "primary   text-right  white--text  font-weight-medium",
         },
         {
           text: "Bill No.",
@@ -183,7 +182,8 @@ export default {
           sortable: false,
           value: "BILLNO",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary text-right  text-md-h6 white--text  font-weight-medium",
         },
         {
           text: "Days",
@@ -191,7 +191,8 @@ export default {
           sortable: false,
           value: "DAYS",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary text-right  text-md-h4 white--text  font-weight-medium",
         },
         {
           text: "Bill Date",
@@ -199,7 +200,8 @@ export default {
           sortable: false,
           value: "BILLDATE",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-right text-md-h4 white--text  font-weight-medium",
         },
         {
           text: " Amt",
@@ -207,7 +209,8 @@ export default {
           sortable: false,
           value: "BILLAMT",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-right text-md-h4 white--text  font-weight-medium",
         },
         {
           text: "Vou. No.",
@@ -215,7 +218,8 @@ export default {
           sortable: false,
           value: "RECEIPTNO",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-right text-md-h4 white--text  font-weight-medium",
         },
         {
           text: "Vou. Dt.",
@@ -223,7 +227,8 @@ export default {
           sortable: false,
           value: "RECEIPTDATE",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-right text-md-h4 white--text  font-weight-medium",
         },
         {
           text: "Vou. Amt.",
@@ -231,7 +236,8 @@ export default {
           sortable: false,
           value: "RECEIPTAMT",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-right text-md-h4 white--text  font-weight-medium",
         },
         {
           text: "Balance",
@@ -239,7 +245,8 @@ export default {
           sortable: false,
           value: "BALANCE",
           // eslint-disable-next-line prettier/prettier
-          class: "primary   text-md-h4 white--text  font-weight-medium",
+          class:
+            "primary  text-right text-md-h4 white--text  font-weight-medium",
         },
       ],
     };
