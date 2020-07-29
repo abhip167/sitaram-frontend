@@ -97,11 +97,11 @@
         <v-list-item>
           <v-flex class="d-flex flex-row justify-space-around">
             <v-chip class="accent black--text ">
-              {{ partyInfo[0].FRDATE.substring(0, 10) }}
+              {{ partyInfo[0].FRDATE.substring(0, 10) | formatCourseDate }}
             </v-chip>
             <span> To </span>
             <v-chip class="accent black--text">
-              {{ partyInfo[0].TODATE.substring(0, 10) }}
+              {{ partyInfo[0].TODATE.substring(0, 10) | formatCourseDate }}
             </v-chip></v-flex
           >
         </v-list-item>
