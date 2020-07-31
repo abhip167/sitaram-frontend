@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" app dark dense>
+    <v-app-bar color="primary" app dark dense hide-on-scroll>
       <v-toolbar-title @click="$router.push('/')"
         >Sitaram Enterprise</v-toolbar-title
       >

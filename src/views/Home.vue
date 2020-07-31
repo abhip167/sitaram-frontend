@@ -1,10 +1,17 @@
 <template>
-  <v-row cols="12" class="mt-0 pt-0">
+  <v-row class="mt-0 pt-0">
     <v-overlay :value="loader">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <v-col v-if="!loading" align="center" justify="center">
+    <v-col
+      v-if="!loading"
+      align="center"
+      justify="center"
+      cols="12"
+      sm="12"
+      md="12"
+    >
       <span class="text-md-h5 text-center text-subtitle-1"
         >Outstanding Summary</span
       >

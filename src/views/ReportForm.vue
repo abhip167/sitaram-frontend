@@ -206,11 +206,12 @@
                       :headers="partyHeaders"
                       :items="partyNames"
                       :search="partySearch"
-                      height="450"
+                      height="550"
                       class="fill-height"
                       :loading="isPartyNamesLoading"
                       fixed-header
-                      single-expand
+                      hide-default-footer
+                      :items-per-page="partyNames.length"
                     >
                       <template v-slot:body="{ items }">
                         <tbody>
@@ -312,11 +313,12 @@
                       :headers="areaHeaders"
                       :items="areaNames"
                       :search="areaSearch"
-                      height="450"
+                      height="550"
                       class="fill-height"
                       :loading="isAreaNamesLoading"
                       fixed-header
-                      single-expand
+                      hide-default-footer
+                      :items-per-page="areaNames.length"
                     >
                       <template v-slot:body="{ items }">
                         <tbody>
@@ -422,7 +424,8 @@
                       class="fill-height"
                       :loading="isPersonNamesLoading"
                       fixed-header
-                      single-expand
+                      hide-default-footer
+                      :items-per-page="personNames.length"
                     >
                       <template v-slot:body="{ items }">
                         <tbody>
@@ -570,7 +573,7 @@ export default {
       areaObject: {},
       areaHeaders: [
         {
-          text: "AREA Name",
+          text: "Area Name",
           align: "center",
           sortable: false,
           value: "AREA",

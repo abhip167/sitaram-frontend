@@ -1,6 +1,6 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="6">
+  <v-row justify="start" align="start">
+    <v-col cols="12" sm="12" md="12">
       <v-overlay :value="loader">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
@@ -15,9 +15,8 @@
             <v-icon>mdi-eye</v-icon>
           </v-btn> -->
           <v-btn
-            v-if="pdfUrl"
             icon
-            :href="$store.state.singlePartyPdfUrl"
+            href="https://sitaram-backend.herokuapp.com/pdf/singleParty.pdf"
             target="_blank"
           >
             <v-icon>mdi-eye</v-icon>
@@ -41,7 +40,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-card-text>
+        <!-- <v-card-text>
           <v-row align="center" justify="space-between">
             <v-col cols="2">
               <v-tooltip right>
@@ -92,7 +91,7 @@
               {{ partyTotal.OUTSTANDINGAMT | removeDecimalZeroes }} ₹
             </v-col>
           </v-row>
-        </v-card-text>
+        </v-card-text> -->
         <v-divider></v-divider>
         <v-list-item>
           <v-flex class="d-flex flex-row justify-space-around">

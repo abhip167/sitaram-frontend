@@ -20,10 +20,15 @@
           <!-- <v-btn @click="sharePdf()">
             <v-icon>mdi-eye</v-icon>
           </v-btn> -->
-          <v-btn
+          <!-- <v-btn
             v-if="this.$store.state.detailPdfUrl"
             icon
             :href="this.$store.state.detailPdfUrl"
+            target="_blank"
+          > -->
+          <v-btn
+            icon
+            href="https://sitaram-backend.herokuapp.com/pdf/detailReport.pdf"
             target="_blank"
           >
             <v-icon>mdi-eye</v-icon>
