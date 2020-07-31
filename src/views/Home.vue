@@ -18,9 +18,7 @@
       <v-card>
         <v-toolbar>
           <v-btn color="primary" rounded class="text-md-h5 text-sm-subtitle-1">
-            {{ new Date().getDate() }}-{{ new Date().getMonth() }}-{{
-              new Date().getFullYear()
-            }}
+            {{ getDate() }}
           </v-btn>
           <v-spacer />
 
@@ -46,10 +44,11 @@
           :search="search"
           :dense="$vuetify.breakpoint.mobile"
           @click:row="itemClicked"
-          height="450"
-          :items-per-page="60"
+          height="550"
+          items-per-page="1000"
           fixed-header
-          mobile-breakpoint="300"
+          hide-default-footer
+          mobile-breakpoint="200"
           class="text-left"
         >
           <!-- <template v-slot:item.RECEIPTDATE="{ item }">
@@ -70,9 +69,15 @@
                     : { background: '#FFFF' },
                 ]"
               >
-                <td class="text-caption">{{ item.PARTYNM }}</td>
-                <td class="text-caption">{{ item.AREA }}</td>
-                <td class="text-subtitle-2">{{ item.OUTSTANDINGAMT }}</td>
+                <td class="text-caption mr-0 pa-1">
+                  {{ item.PARTYNM }}
+                </td>
+                <td class="text-caption ma-0  pa-1">
+                  {{ item.AREA }}
+                </td>
+                <td class="text-subtitle-2 ma-1 pa-1">
+                  {{ item.OUTSTANDINGAMT }}
+                </td>
               </tr>
             </tbody>
           </template>
@@ -95,6 +100,7 @@
 <script>
 // import uniqBy from "lodash.uniqby";
 // import axios from "axios";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -110,6 +116,7 @@ export default {
           align: "start",
           sortable: false,
           value: "PARTYNM",
+
           // eslint-disable-next-line prettier/prettier
           class: "primary   text-md-h4 white--text  font-weight-medium",
         },
@@ -141,6 +148,9 @@ export default {
         this.loader = false;
       }
     },
+    getDate() {
+      return moment(new Date()).format("DD-MM-YYYY");
+    },
   },
   computed: {
     // group() {
@@ -165,4 +175,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+table th + th {
+  border-left: 1px solid #dddddd;
+}
+table td + td {
+  border-left: 1px solid #dddddd;
+}
+</style>

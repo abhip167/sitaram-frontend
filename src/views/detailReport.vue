@@ -11,9 +11,7 @@
       <v-card>
         <v-toolbar>
           <v-btn color="primary" rounded class="text-md-h5 text-sm-subtitle-1">
-            {{ new Date().getDate() }}-{{ new Date().getMonth() }}-{{
-              new Date().getFullYear()
-            }}
+            {{ getDate() }}
           </v-btn>
           <v-spacer />
 
@@ -46,6 +44,7 @@
           height="450"
           :items-per-page="60"
           fixed-header
+          hide-default-footer
           mobile-breakpoint="300"
           class="text-left"
         >
@@ -77,25 +76,31 @@
                 <td class="text-caption">{{ entry.BILLNO }}</td>
                 <td class="text-subtitle-2">{{ entry.DAYS }}</td>
                 <td class="text-subtitle-2">{{ entry.BILLDATE }}</td>
-                <td class="text-subtitle-2">{{ entry.BILLAMT }}</td>
+                <td class="text-subtitle-2">
+                  {{ entry.BILLAMT.toLocaleString("en-IN") }}
+                </td>
                 <td class="text-subtitle-2">{{ entry.RECEIPTNO }}</td>
                 <td class="text-subtitle-2">{{ entry.RECEIPTDATE }}</td>
-                <td class="text-subtitle-2">{{ entry.RECEIPTAMT }}</td>
-                <td class="text-subtitle-2">{{ entry.BALANCE }}</td>
+                <td class="text-subtitle-2">
+                  {{ entry.RECEIPTAMT.toLocaleString("en-IN") }}
+                </td>
+                <td class="text-subtitle-2">
+                  {{ entry.BALANCE.toLocaleString("en-IN") }}
+                </td>
               </tr>
               <tr class="lime">
                 <td colspan="4" class="text-left text-subtitle-2">
                   Outstanding =
-                  {{ singleArray[0].OUTSTANDINGAMT }}
+                  {{ singleArray[0].OUTSTANDINGAMT.toLocaleString("en-IN") }}
                 </td>
                 <td class="text-left text-subtitle-2">
-                  {{ singleArray[0].BILLTOTAL }}
+                  {{ singleArray[0].BILLTOTAL.toLocaleString("en-IN") }}
                 </td>
                 <td colspan="2" class="text-center text-subtitle-2">
                   ( --- TOTAL ---)
                 </td>
                 <td class="text-left text-subtitle-2">
-                  {{ singleArray[0].RECEIPTTOTAL }}
+                  {{ singleArray[0].RECEIPTTOTAL.toLocaleString("en-IN") }}
                 </td>
                 <td class="text-center text-subtitle-2"></td>
               </tr>
@@ -121,7 +126,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import moment from "moment";
 export default {
   name: "detailReport",
   data() {
@@ -244,6 +249,9 @@ export default {
         this.loader = true;
         alert(`Your system doesn't support sharing files.`);
       }
+    },
+    getDate() {
+      return moment(new Date()).format("DD-MM-YYYY");
     },
   },
   computed: {

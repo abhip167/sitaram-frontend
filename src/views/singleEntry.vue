@@ -113,7 +113,7 @@
           <v-list-item-subtitle>48%</v-list-item-subtitle>
         </v-list-item> -->
 
-        <v-data-table
+        <!-- <v-data-table
           :headers="headers"
           :items="partyInfo"
           :items-per-page="partyInfo.length"
@@ -121,8 +121,8 @@
           mobile-breakpoint="300"
           dense
           hide-default-footer
-        >
-          <!-- <template v-slot:item.BILLDATE="{ item }">
+        > -->
+        <!-- <template v-slot:item.BILLDATE="{ item }">
             {{ item.BILLDATE.substring(0, 10) }}
           </template>
           <template v-slot:item.RECEIPTDATE="{ item }">
@@ -130,6 +130,67 @@
               item.RECEIPTDATE.substring(0, 10)
             }}</span>
           </template> -->
+        <!-- </v-data-table> -->
+        <v-data-table
+          :headers="headers"
+          :items="partyInfo"
+          :dense="$vuetify.breakpoint.mobile"
+          disable-sort
+          hide-default-footer
+          :items-per-page="600"
+          fixed-header
+          mobile-breakpoint="300"
+          class="text-left"
+        >
+          <template v-slot:body="{ items }">
+            <tbody>
+              <tr
+                v-for="(entry, id) in items"
+                :key="id"
+                class="mt-7"
+                v-bind:style="[
+                  id % 2 == 1
+                    ? { background: '#EBEBEB' }
+                    : { background: '#FFFF' },
+                ]"
+              >
+                <td class="text-caption">{{ entry.BILLHEADER }}</td>
+                <td class="text-caption">{{ entry.BILLNO }}</td>
+                <td class="text-subtitle-2">{{ entry.DAYS }}</td>
+                <td class="text-subtitle-2">{{ entry.BILLDATE }}</td>
+                <td class="text-subtitle-2">
+                  {{ entry.BILLAMT.toLocaleString("en-IN") }}
+                </td>
+                <td class="text-subtitle-2">{{ entry.RECEIPTNO }}</td>
+                <td class="text-subtitle-2">{{ entry.RECEIPTDATE }}</td>
+                <td class="text-subtitle-2">
+                  {{ entry.RECEIPTAMT.toLocaleString("en-IN") }}
+                </td>
+                <td class="text-subtitle-2">
+                  {{ entry.BALANCE.toLocaleString("en-IN") }}
+                </td>
+              </tr>
+              <tr class="lime">
+                <td colspan="4" class="text-left text-subtitle-2">
+                  Outstanding =
+                  {{ partyTotal.OUTSTANDINGAMT.toLocaleString("en-IN") }}
+                </td>
+                <td class="text-left text-subtitle-2">
+                  {{ partyTotal.BILLTOTAL.toLocaleString("en-IN") }}
+                </td>
+                <td colspan="2" class="text-center text-subtitle-2">
+                  TOTAL
+                </td>
+                <td class="text-left text-subtitle-2">
+                  {{ partyTotal.RECEIPTTOTAL.toLocaleString("en-IN") }}
+                </td>
+                <td class="text-center text-subtitle-2"></td>
+              </tr>
+              <tr class="white">
+                <td colspan="10"></td>
+              </tr>
+            </tbody>
+          </template>
         </v-data-table>
 
         <v-divider></v-divider>
