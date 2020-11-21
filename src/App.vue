@@ -5,6 +5,12 @@
         >Sitaram Enterprise</v-toolbar-title
       >
       <v-spacer></v-spacer>
+
+      <span class="text-caption text-center">
+        {{ formattedDate("date") }} <br />
+        {{ formattedDate() }}</span
+      >
+      <v-spacer></v-spacer>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
     </v-app-bar>
 
@@ -70,9 +76,16 @@ export default {
     }
   },
   methods: {
-    formattedDate () {
-      const date = moment(this.lastSyncDate.lastsynctime_zerofailures_member).format("DD/MM/YYYY HH:mm A")
-      return date
+    formattedDate (type) {
+      // const date = moment(this.lastSyncDate.lastsynctime_zerofailures_member).format("DD/MM/YYYY HH:mm A")
+      if (type === 'date') {
+        const date = moment(this.lastSyncDate.lastsynctime_zerofailures_member).format("DD/MM/YYYY")
+        return date
+      } else {
+        const date = moment(this.lastSyncDate.lastsynctime_zerofailures_member).format("HH:mm A")
+        return date
+      }
+
     }
   }
 };
