@@ -39,7 +39,8 @@
     </v-main>
     <v-footer padless>
       <v-col class="text-center" cols="12">
-        {{ formattedDate() }} — <strong>Sitaram Dryfruits</strong>
+        {{ formattedDate("date") }} {{ formattedDate() }} —
+        <strong>Sitaram Dryfruits</strong>
       </v-col>
     </v-footer>
   </v-app>
