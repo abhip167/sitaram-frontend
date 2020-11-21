@@ -17,6 +17,7 @@ export default new Vuex.Store({
     billBooks: [],
     queryParameters: {},
     detailQueryParameters: {},
+    lastSync: "",
   },
   mutations: {
     SAVE_SUMMARY_REPORT(state, dataFromApi) {
@@ -45,6 +46,9 @@ export default new Vuex.Store({
     },
     SAVE_DETAIL_QUERY(state, queryParameters) {
       state.detailQueryParameters = queryParameters;
+    },
+    SAVE_LAST_SYNC(state, data) {
+      state.lastSync = data;
     },
   },
   actions: {
@@ -202,6 +206,23 @@ export default new Vuex.Store({
         const { recordset } = data;
         console.log(rawData);
         commit("SAVE_HELPERS", recordset);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+
+      // this.entries = recordset;
+    },
+    async getLastSync({ commit }) {
+      try {
+        console.log("Last Sync Fired");
+        const rawData = await fetch(
+          process.env.VUE_APP_API + "/outstandingrep/lastsync"
+        );
+        const data = await rawData.json();
+        const { recordset } = data;
+        console.log(rawData);
+        commit("SAVE_LAST_SYNC", recordset[0]);
         return true;
       } catch (error) {
         console.log(error);

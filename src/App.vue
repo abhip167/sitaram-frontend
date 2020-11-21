@@ -31,10 +31,16 @@
     <v-main>
       <v-container fluid><router-view></router-view></v-container>
     </v-main>
+    <v-footer padless>
+      <v-col class="text-center" cols="12">
+        {{ formattedDate() }} — <strong>Sitaram Dryfruits</strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
+import moment from "moment"
 export default {
   name: "App",
 
@@ -55,6 +61,20 @@ export default {
     ],
     //
   }),
+  created () {
+    this.$store.dispatch("getLastSync")
+  },
+  computed: {
+    lastSyncDate () {
+      return this.$store.state.lastSync
+    }
+  },
+  methods: {
+    formattedDate () {
+      const date = moment(this.lastSyncDate.lastsynctime_zerofailures_member).format("DD/MM/YYYY HH:mm A")
+      return date
+    }
+  }
 };
 </script>
 
