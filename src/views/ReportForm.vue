@@ -19,7 +19,7 @@
               </v-row>
             </v-radio-group>
             <v-divider></v-divider>
-            <div class=" d-flex flex-row justify-space-between align-center">
+            <div class="d-flex flex-row justify-space-between align-center">
               <v-switch v-model="book" class="mx-2" label="Book"></v-switch>
               <v-menu offset-y v-if="book">
                 <template v-slot:activator="{ on, attrs }">
@@ -139,7 +139,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <div
-                      class=" d-flex flex-column flex-md-row flex-lg-row justify-space-between "
+                      class="d-flex flex-column flex-md-row flex-lg-row justify-space-between"
                     >
                       <span class="text-h6 text-black">
                         <v-icon left color="red" class="mb-2" dark
@@ -180,7 +180,7 @@
                       </div>
                     </div>
                   </template>
-                  <v-card style="height: 500px;">
+                  <v-card style="height: 500px">
                     <v-toolbar color="primary" dense>
                       <v-text-field
                         v-model="partySearch"
@@ -247,7 +247,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <div
-                      class=" d-flex flex-column flex-md-row flex-lg-row justify-space-between "
+                      class="d-flex flex-column flex-md-row flex-lg-row justify-space-between"
                     >
                       <span class="text-h6 text-black">
                         <v-icon left color="green" class="mb-2" dark
@@ -287,7 +287,7 @@
                       </div>
                     </div>
                   </template>
-                  <v-card style="height: 500px;">
+                  <v-card style="height: 500px">
                     <v-toolbar color="primary" dense>
                       <v-text-field
                         v-model="areaSearch"
@@ -354,7 +354,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <div
-                      class=" d-flex flex-column flex-md-row flex-lg-row justify-space-between "
+                      class="d-flex flex-column flex-md-row flex-lg-row justify-space-between"
                     >
                       <span class="text-h6 text-black">
                         <v-icon left color="purple" class="mb-2" dark
@@ -394,7 +394,7 @@
                       </div>
                     </div>
                   </template>
-                  <v-card style="height: 500px;">
+                  <v-card style="height: 500px">
                     <v-toolbar color="primary" dense>
                       <v-text-field
                         v-model="personSearch"
@@ -448,9 +448,7 @@
             <v-divider></v-divider>
             <v-row>
               <v-col>
-                <div
-                  class=" d-flex flex-row justify-space-between align-center"
-                >
+                <div class="d-flex flex-row justify-space-between align-center">
                   <span class="text-h6 text-black">PAID TYPE</span>
                   <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
@@ -504,16 +502,12 @@
         <v-card>
           <v-card-title class="headline red--text">Please Select</v-card-title>
 
-          <v-card-text>
-            Party or Area or Person to proceed
-          </v-card-text>
+          <v-card-text> Party or Area or Person to proceed </v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="red darken-1" text @click="error = false">
-              Ok
-            </v-btn>
+            <v-btn color="red darken-1" text @click="error = false"> Ok </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -522,7 +516,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       error: false,
       loader: false,
@@ -600,18 +594,18 @@ export default {
     };
   },
   filters: {
-    formatCourseDate(date) {
+    formatCourseDate (date) {
       const dateObj = new Date(date + "T00:00:00");
       return new Intl.DateTimeFormat("en-IN").format(dateObj);
     },
   },
   computed: {
-    billBooks() {
+    billBooks () {
       return this.$store.state.billBooks;
     },
   },
   watch: {
-    book: async function(val) {
+    book: async function (val) {
       if (val) {
         if (this.billBooks.length > 0) return;
         if (this.loader) return;
@@ -621,7 +615,7 @@ export default {
       }
     },
   },
-  mounted() {
+  mounted () {
     // Items have already been loaded
     if (this.partyNames.length > 0) return;
     if (this.areaNames.length > 0) return;
@@ -637,7 +631,11 @@ export default {
     this.isPersonNamesLoading = true;
     // MAX POOL IS ONE - ONLY ONE REQUEST AT A TIME--*********************
     // Lazily load input items
-    fetch(process.env.VUE_APP_API + "/help/party")
+    fetch(process.env.VUE_APP_API + "/help/party", {
+      headers: new Headers({
+        'Authorization': 'Basic ' + btoa(`${this.$store.state.user.username}:${this.$store.state.user.password}`),
+      }),
+    })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -647,14 +645,21 @@ export default {
         // this.entries = recordset;
       })
       .catch((err) => {
+
+        this.$store.dispatch("logoutUser")
         console.log(err);
+        this.$router.push("/Login")
       })
       .finally(() => {
         this.isPartyNamesLoading = false;
         this.isAreaNamesLoading = false;
         this.isPersonNamesLoading = false;
       });
-    fetch(process.env.VUE_APP_API + "/help/area")
+    fetch(process.env.VUE_APP_API + "/help/area", {
+      headers: new Headers({
+        'Authorization': 'Basic ' + btoa(`${this.$store.state.user.username}:${this.$store.state.user.password}`),
+      }),
+    })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -665,9 +670,16 @@ export default {
       })
       .catch((err) => {
         console.log(err);
+        this.$store.dispatch("logoutUser")
+        console.log(err);
+        this.$router.push("/Login")
       })
       .finally(() => (this.isAreaNamesLoading = false));
-    fetch(process.env.VUE_APP_API + "/help/person")
+    fetch(process.env.VUE_APP_API + "/help/person", {
+      headers: new Headers({
+        'Authorization': 'Basic ' + btoa(`${this.$store.state.user.username}:${this.$store.state.user.password}`),
+      }),
+    })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -678,12 +690,15 @@ export default {
       })
       .catch((err) => {
         console.log(err);
+        this.$store.dispatch("logoutUser")
+        console.log(err);
+        this.$router.push("/Login")
       })
       .finally(() => (this.isPersonNamesLoading = false));
   },
 
   methods: {
-    async generateReport() {
+    async generateReport () {
       const queryParameters = {
         FRDATE: this.fromdate,
         TODATE: this.todate,
@@ -718,7 +733,7 @@ export default {
         }
       }
     },
-    async loadBillBooks() {
+    async loadBillBooks () {
       // if (this.book) return;
       this.book = true;
       // if (this.isBillBooksLoading) return;
@@ -727,14 +742,14 @@ export default {
       // this.billBooks = await this.$store.state.helpers.billBooks;
       this.isBillBooksLoading = false;
     },
-    isEmpty(obj) {
+    isEmpty (obj) {
       if (Object.keys(obj).length === 0 && obj.constructor === Object) {
         return true;
       } else {
         false;
       }
     },
-    valid() {
+    valid () {
       if (
         !this.isEmpty(this.partyObject) ||
         !this.isEmpty(this.areaObject) ||

@@ -18,6 +18,12 @@ export default new Vuex.Store({
     queryParameters: {},
     detailQueryParameters: {},
     lastSync: "",
+
+    isAuthenticated: false,
+    user: {
+      username: "",
+      password: "",
+    },
   },
   mutations: {
     SAVE_SUMMARY_REPORT(state, dataFromApi) {
@@ -50,8 +56,57 @@ export default new Vuex.Store({
     SAVE_LAST_SYNC(state, data) {
       state.lastSync = data;
     },
+    SAVE_USER(state, data) {
+      state.user = data;
+    },
+    SET_AUTH(state, data) {
+      state.isAuthenticated = data;
+    },
   },
   actions: {
+    // Login Function which simply sends HELLO to the server and the server tells if the username and password is correct or not
+    // If correct then store the username and paass in the store else => set isAuthenticated = false & user object Empty.
+    // We are sending username and password in each req. with Auth Headers
+    async login({ commit }, { user }) {
+      console.log(user);
+      try {
+        const rawdata = await fetch(process.env.VUE_APP_API + "/help/login", {
+          method: "POST",
+          body: JSON.stringify({ data: "Hello" }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: "Basic " + btoa(`${user.username}:${user.password}`),
+          },
+        });
+
+        const data = await rawdata.json();
+        if (data.success && data.auth) {
+          commit("SAVE_USER", user);
+          commit("SET_AUTH", true);
+          return true;
+        } else {
+          commit("SAVE_USER", {});
+          commit("SET_AUTH", false);
+          return false;
+        }
+        // Displaying results to console
+      } catch (error) {
+        alert("Please Enter Correct Username and Passowrd.");
+        console.log(error);
+        return false;
+      }
+    },
+    async logoutUser({ commit }) {
+      commit("SAVE_USER", {});
+      commit("SET_AUTH", false);
+    },
+    generateAuth({ state }) {
+      if (!state.isAuthenticated || !state.user.password) {
+        this.$router.push("/Login");
+      }
+      return "Basic " + btoa(`${state.user.username}:${state.user.password}`);
+    },
+
     async getOutstandingReport({ commit }, queryParameters) {
       try {
         const rawdata = await fetch(
@@ -61,6 +116,7 @@ export default new Vuex.Store({
             body: JSON.stringify(queryParameters),
             headers: {
               "Content-type": "application/json; charset=UTF-8",
+              Authorization: await this.dispatch("generateAuth"),
             },
           }
         );
@@ -71,6 +127,7 @@ export default new Vuex.Store({
 
         // Displaying results to console
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
     },
@@ -83,6 +140,7 @@ export default new Vuex.Store({
             body: JSON.stringify(queryParameters),
             headers: {
               "Content-type": "application/json; charset=UTF-8",
+              Authorization: await this.dispatch("generateAuth"),
             },
           }
         );
@@ -91,9 +149,9 @@ export default new Vuex.Store({
         console.log(data);
         commit("SAVE_DETAIL_REPORT", data);
         commit("SAVE_DETAIL_QUERY", queryParameters);
-
         // Displaying results to console
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
     },
@@ -103,7 +161,12 @@ export default new Vuex.Store({
         queryParameters.PARTY = party;
         const result = await Axios.post(
           `${process.env.VUE_APP_API}/outstandingrep/singleParty`,
-          queryParameters
+          queryParameters,
+          {
+            headers: {
+              Authorization: await this.dispatch("generateAuth"),
+            },
+          }
         );
 
         const data = await result.data;
@@ -125,6 +188,7 @@ export default new Vuex.Store({
 
         // Displaying results to console
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
     },
@@ -135,6 +199,9 @@ export default new Vuex.Store({
           method: "POST",
           responseType: "blob",
           data: state.queryParameters,
+          headers: {
+            Authorization: await this.dispatch("generateAuth"),
+          },
         };
         const response = await Axios(config);
 
@@ -159,6 +226,7 @@ export default new Vuex.Store({
 
         // Displaying results to console
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
     },
@@ -169,6 +237,9 @@ export default new Vuex.Store({
           method: "POST",
           responseType: "blob",
           data: state.queryParameters,
+          headers: {
+            Authorization: await this.dispatch("generateAuth"),
+          },
         };
         const response = await Axios(config);
 
@@ -193,6 +264,7 @@ export default new Vuex.Store({
 
         // Displaying results to console
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
     },
@@ -200,7 +272,13 @@ export default new Vuex.Store({
       try {
         console.log("Bill Books Fired");
         const rawData = await fetch(
-          process.env.VUE_APP_API + "/help/billbooks"
+          process.env.VUE_APP_API + "/help/billbooks",
+          {
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: await this.dispatch("generateAuth"),
+            },
+          }
         );
         const data = await rawData.json();
         const { recordset } = data;
@@ -208,6 +286,7 @@ export default new Vuex.Store({
         commit("SAVE_HELPERS", recordset);
         return true;
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
 
@@ -217,7 +296,13 @@ export default new Vuex.Store({
       try {
         console.log("Last Sync Fired");
         const rawData = await fetch(
-          process.env.VUE_APP_API + "/outstandingrep/lastsync"
+          process.env.VUE_APP_API + "/outstandingrep/lastsync",
+          {
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: await this.dispatch("generateAuth"),
+            },
+          }
         );
         const data = await rawData.json();
         const { recordset } = data;
@@ -225,6 +310,7 @@ export default new Vuex.Store({
         commit("SAVE_LAST_SYNC", recordset[0]);
         return true;
       } catch (error) {
+        this.dispatch("logoutUser");
         console.log(error);
       }
 
