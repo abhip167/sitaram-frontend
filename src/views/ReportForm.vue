@@ -646,7 +646,7 @@ export default {
       })
       .catch((err) => {
 
-        this.$store.dispatch("logoutUser")
+        // this.$store.dispatch("logoutUser")
         console.log(err);
         this.$router.push("/Login")
       })
@@ -670,7 +670,7 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-        this.$store.dispatch("logoutUser")
+        // this.$store.dispatch("logoutUser")
         console.log(err);
         this.$router.push("/Login")
       })
@@ -690,7 +690,7 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-        this.$store.dispatch("logoutUser")
+        // this.$store.dispatch("logoutUser")
         console.log(err);
         this.$router.push("/Login")
       })

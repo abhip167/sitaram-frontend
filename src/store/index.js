@@ -286,7 +286,7 @@ export default new Vuex.Store({
         commit("SAVE_HELPERS", recordset);
         return true;
       } catch (error) {
-        this.dispatch("logoutUser");
+        // this.dispatch("logoutUser");
         console.log(error);
       }
 
@@ -310,7 +310,7 @@ export default new Vuex.Store({
         commit("SAVE_LAST_SYNC", recordset[0]);
         return true;
       } catch (error) {
-        this.dispatch("logoutUser");
+        // this.dispatch("logoutUser");
         console.log(error);
       }
 
